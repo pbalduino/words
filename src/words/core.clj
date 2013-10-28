@@ -1,13 +1,16 @@
 (ns words.core)
 
-(defn strip  [^String text ^String pattern]
+(defn strip [^String text ^String pattern]
     (.replaceAll text pattern ""))
 
 (defn remove-line-breaks [^String text]
   (strip text "\n"))
 
 (defn remove-spaces [^String text]
-  (strip text " "))
+  (-> text 
+      (strip " ")
+      (strip ",")
+      (strip "\\.")))
 
 (defn remove-tags [^String text]
   (-> text
@@ -23,16 +26,18 @@
                      remove-tags
                      remove-spaces
                      remove-line-breaks)]
-    (println stripped)
-    (.length stripped)))
+    ; (println stripped)
+    (count stripped)))
 
 (defn -main [& args]
   (if (seq? args)
-      (-> args
-          first
-          slurp
-          count-characters
-          println)
+    (let [text          (-> args
+                            first
+                            slurp)
+          total-size    (count text)
+          stripped-size (count-characters text)]
+        (println (str "Tamanho total: " total-size " bytes"))
+        (println (str "Tamanho real : " stripped-size " bytes"))
+        (println (str "Progresso    : " (format "%,.1f" (* (/ stripped-size 20000.0) 100)) "%")))
       (println "Informe o nome do arquivo HTML"))
-  (println)
-)
+  (println))
