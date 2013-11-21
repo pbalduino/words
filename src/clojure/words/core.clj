@@ -1,6 +1,4 @@
-(ns words.core
-  (:import [java.nio.file FileSystems Path StandardWatchEventKinds]
-           [watcher Watcher]))
+(ns words.core)
 
 (defn strip [^String text ^String pattern]
     (.replaceAll text pattern ""))
