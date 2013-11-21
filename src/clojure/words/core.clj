@@ -37,17 +37,6 @@
       (println (str "Tamanho real : " stripped-size " bytes"))
       (println (str "Progresso    : " (format "%,.1f" (* (/ stripped-size 20000.0) 100)) "%"))))
 
-(def watcher (. (FileSystems/getDefault) newWatchService))
-
-(defn get-path [^String filename]
-   (let [fs (FileSystems/getDefault)]
-      (. fs getPath "." (into-array [filename]))))
-
-(defn watch-file-change [filename what]
-  (let [path (get-path filename)
-        key  (. path register watcher (into-array [StandardWatchEventKinds/ENTRY_MODIFY]))]
-    (println key)))
-
 (defn -main [& args]
   (if (seq? args)
     (let [filename (first args)]
